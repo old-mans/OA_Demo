@@ -32,6 +32,22 @@ namespace OA_Demo
             });
             services.AddControllers();
             #endregion
+            services.AddControllersWithViews().AddNewtonsoftJson();
+            #region CORS
+            //跨域第一种方法，先注入服务，声明策略，然后再下边app中配置开启中间件
+            services.AddCors(c =>
+            {
+                //一般采用这种方法
+                c.AddPolicy("LimitRequests", policy =>
+                {
+                    policy
+                    .WithOrigins("http://127.0.0.1:1818", "http://localhost:8080", "http://localhost:8021", "http://localhost:8081", "http://localhost:1818")//支持多个域名端口，注意端口号后不要带/斜杆：比如localhost:8000/，是错的 
+                    .AllowAnyHeader()//Ensures that the policy allows any header.
+                    .AllowAnyMethod();
+                });
+            });
+
+            #endregion
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -49,6 +65,17 @@ namespace OA_Demo
             });
             #endregion
             app.UseRouting();
+            #region Cors 跨域配置
+            app.UseCors("LimitRequests");
+            // 跳转https 有Https时使用
+            //app.UseHttpsRedirection();
+            //使用静态文件
+            app.UseStaticFiles();
+            //使用cookie
+            app.UseCookiePolicy();
+            // 返回错误码
+            app.UseStatusCodePages();//把错误码返回前台，比如是404
+            #endregion
             //设置起始页
             app.UseStaticFiles();
             app.Run(ctx =>
@@ -56,6 +83,8 @@ namespace OA_Demo
                 ctx.Response.Redirect("/swagger/"); //可以支持虚拟路径或者index.html这类起始页.
                 return Task.FromResult(0);
             });
+     
+
         }
     }
 }

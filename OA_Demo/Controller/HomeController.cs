@@ -4,54 +4,48 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Models;
+using OA_Demo.Helper;
 
 namespace OA_Demo.Controller
 {
     /// <summary>
     /// 主页
     /// </summary>
-    [Route("api/[controller]")]
+    [Produces("application/json")]
+    [Route("api/Home/[action]")]
     [ApiController]
-    public class HomeController : ControllerBase
+    public class HomeController : Microsoft.AspNetCore.Mvc.Controller
     {
         /// <summary>
-        /// 获取
+        /// 登录
         /// </summary>
         /// <returns></returns>
         // GET: api/Home
-        [HttpGet]
-        public IEnumerable<string> Get()
+        [HttpPost(Name = "login")]
+        public JsonResult login([FromBody] Users users)
         {
-            return new string[] { "value1", "value2" };
+            //var data = new JsonResult();
+            if (users.UserName != "" || users.UserPwd != "")
+            {
+                var data = new { id = 1, name = "123" };
+                return Json(ReturnStd.Success(data));
+            }
+            return Json(new { erry ="200" });
         }
         /// <summary>
-        /// 根据ID获取
+        /// 获取列表
         /// </summary>
-        /// <param name="id"></param>
         /// <returns></returns>
-        // GET: api/Home/5
-        [HttpGet("{id}", Name = "Get")]
-        public string Get(int id)
+        // GET: api/Home
+        [HttpPost(Name = "get")]
+        public JsonResult getlist()
         {
-            return "value";
-        }
-
-        // POST: api/Home
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
-
-        // PUT: api/Home/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE: api/ApiWithActions/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
+            var data = new Adept {
+                AdeptID = 1,
+                AdeptName="123",
+            };
+            return Json(ReturnStd.Success(data));
         }
     }
 }

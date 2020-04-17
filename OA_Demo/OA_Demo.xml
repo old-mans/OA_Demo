@@ -9,17 +9,16 @@
             主页
             </summary>
         </member>
-        <member name="M:OA_Demo.Controller.HomeController.Get">
+        <member name="M:OA_Demo.Controller.HomeController.login(Models.Users)">
             <summary>
-            获取
+            登录
             </summary>
             <returns></returns>
         </member>
-        <member name="M:OA_Demo.Controller.HomeController.Get(System.Int32)">
+        <member name="M:OA_Demo.Controller.HomeController.getlist">
             <summary>
-            根据ID获取
+            获取列表
             </summary>
-            <param name="id"></param>
             <returns></returns>
         </member>
     </members>
